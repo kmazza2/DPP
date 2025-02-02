@@ -9,7 +9,7 @@ include $(TOPSRCDIR)/make.inc
 all: lapack_install lib blas_testing lapack_testing
 
 .PHONY: lib
-lib: lapacklib tmglib
+lib: blaslib lapacklib tmglib
 #lib: blaslib variants lapacklib tmglib
 
 .PHONY: blaslib
