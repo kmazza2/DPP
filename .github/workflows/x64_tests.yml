@@ -12,3 +12,5 @@ jobs:
         working-directory: /home/runner/work/Optimal-Design/Optimal-Design
       - run: ./test_ieee
         working-directory: /home/runner/work/Optimal-Design/Optimal-Design
+      - run: ./test_fail
+        working-directory: /home/runner/work/Optimal-Design/Optimal-Design

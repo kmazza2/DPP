@@ -1,6 +1,6 @@
-all : test_ieee test_lapack test_matrix_market test_matrix test_leak
+all : test_ieee test_lapack test_matrix_market test_matrix test_leak test_fail
 clean: .
-	rm test_ieee test_lapack test_matrix_market test_matrix test_leak lib/matrix_market.o lib/matrix_market_subs.o lib/matrix.o matrix.mod matrix_market.mod
+	rm test_ieee test_lapack test_matrix_market test_matrix test_leak test_fail lib/matrix_market.o lib/matrix_market_subs.o lib/matrix.o matrix.mod matrix_market.mod
 test_ieee:	test_ieee.f90
 	gfortran -std=f2018 -Wall -pedantic-errors -Wextra -Wsurprising -fsanitize=undefined -o test_ieee test_ieee.f90
 test_lapack:	test_lapack.f90
@@ -19,3 +19,5 @@ test_matrix:   test_matrix.f90 matrix.o matrix_market.o matrix_market_subs.o
 	gfortran -std=f2018 -o test_matrix test_matrix.f90 -L lib -l:matrix.o -l:matrix_market.o -l:matrix_market_subs.o -llapack -lrefblas
 test_leak:	test_leak.f90 matrix.o matrix_market.o matrix_market_subs.o
 	gfortran -std=f2018 -fsanitize=undefined -o test_leak test_leak.f90  -L lib -l:matrix.o -l:matrix_market.o -l:matrix_market_subs.o -llapack -lrefblas
+test_fail:	test_fail.f90
+	gfortran -std=f2018 -o test_fail test_fail.f90
