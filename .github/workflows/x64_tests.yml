@@ -4,10 +4,10 @@ on: [push]
 jobs:
   Test-on-x64:
     runs-on: ubuntu-24.04
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}
     steps:
-      - run: bash configure
+      - run: bash ./configure
+        working-directory: ${{ github.workspace }}
       - run: make
+        working-directory: ${{ github.workspace }}
       - run: ./test_ieee
+        working-directory: ${{ github.workspace }}
