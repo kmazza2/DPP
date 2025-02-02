@@ -554,6 +554,11 @@ program test
    else
       print *, 'IEEE invalid exception IS NOT detected for real128'
    end if
+   if (log_negative_detected) then
+      print *, 'IEEE invalid exception IS detected for log_negative'
+   else
+      print *, 'IEEE invalid exception IS NOT detected for log_negative'
+   end if
 
 end program test
 
