@@ -5,7 +5,7 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-24.04
     steps:
-      - run: configure
+      - run: ./configure
         working-directory: ${{ github.workspace }}
       - run: make
         working-directory: ${{ github.workspace }}
