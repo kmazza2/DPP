@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -f lib/liblapack.a ] || [ ! -f lib/librefblas.a ] || [ ! -f lib/libtmglib.a ]
+then
+   cd lapack-3.12.1
+   make
+   cd ..
+   cp lapack-3.12.1/liblapack.a lib/
+   cp lapack-3.12.1/librefblas.a lib/
+   cp lapack-3.12.1/libtmglib.a lib/
+fi
+
+if [ ! -f lib/liblapack.a ] || [ ! -f lib/librefblas.a ] || [ ! -f lib/libtmglib.a ]
+then
+   echo "Failed to create LAPACK static libraries. Aborting."
+   exit 1
+fi
