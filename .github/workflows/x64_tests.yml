@@ -5,5 +5,5 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-24.04
     steps:
-      - run: cd ${{ github.workspace }} && configure && make
+      - run: cd ${{ github.workspace }} && ./configure && make
       - run: ${{ github.workspace }}/test_ieee
