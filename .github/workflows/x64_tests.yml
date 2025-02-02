@@ -8,9 +8,6 @@ jobs:
       - uses: actions/checkout@v4
       - run: ls
       - run: pwd
-      - run: configure
-        working-directory: ${{ github.workspace }}
+      - run: ./configure
       - run: make
-        working-directory: ${{ github.workspace }}
       - run: ./test_ieee
-        working-directory: ${{ github.workspace }}
