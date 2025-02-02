@@ -1,13 +1,13 @@
 name: Ubuntu x64
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: ${{ github.actor }} is testing on x64
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Test-on-x64:
     runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     steps:
       - run: ./configure
-        working-directory: ${{ github.workspace }}
       - run: make
-        working-directory: ${{ github.workspace }}
-      - run: test_ieee
-        working-directory: ${{ github.workspace }}
+      - run: ./test_ieee
