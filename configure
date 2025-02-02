@@ -3,7 +3,7 @@
 if [ ! -f lib/liblapack.a ] || [ ! -f lib/librefblas.a ] || [ ! -f lib/libtmglib.a ]
 then
    cd lapack-3.12.1
-   make
+   make lib
    cd ..
    cp lapack-3.12.1/liblapack.a lib/
    cp lapack-3.12.1/librefblas.a lib/
