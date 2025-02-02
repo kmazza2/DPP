@@ -6,8 +6,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - run: ls
-      - run: pwd
       - run: ./configure
+        working-directory: /home/runner/work/Optimal-Design/Optimal-Design
       - run: make
+        working-directory: /home/runner/work/Optimal-Design/Optimal-Design
       - run: ./test_ieee
+        working-directory: /home/runner/work/Optimal-Design/Optimal-Design
