@@ -1,4 +1,4 @@
-name: Ubuntu 24 arm64
+name: Ubuntu arm64
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
