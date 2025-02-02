@@ -5,7 +5,10 @@ jobs:
   Test-on-x64:
     runs-on: ubuntu-24.04
     steps:
-      - run: bash ./configure
+      - uses: actions/checkout@v4
+      - run: ls
+      - run: pwd
+      - run: configure
         working-directory: ${{ github.workspace }}
       - run: make
         working-directory: ${{ github.workspace }}
