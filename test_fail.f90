@@ -1,5 +1,6 @@
 program test_fail
 
+   use, intrinsic :: iso_fortran_env
    implicit none
 
    real(real64) :: x
