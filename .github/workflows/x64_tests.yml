@@ -8,6 +8,6 @@ jobs:
       run:
         working-directory: ${{ github.workspace }}
     steps:
-      - run: ./configure
+      - run: bash configure
       - run: make
       - run: ./test_ieee
