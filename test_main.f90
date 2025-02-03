@@ -1,4 +1,4 @@
-program test_fail
+program test_main
 
    use, intrinsic :: iso_fortran_env
    implicit none
@@ -6,6 +6,5 @@ program test_fail
    real(real64) :: x
    x = 25.0_real64
    print *, x
-   error stop 'Fail for GitHub Actions'
 
-end program test_fail
+end program test_main
