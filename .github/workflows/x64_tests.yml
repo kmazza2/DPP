@@ -12,5 +12,7 @@ jobs:
         working-directory: /home/runner/work/Optimal-Design/Optimal-Design
       - run: ./test_main
         working-directory: /home/runner/work/Optimal-Design/Optimal-Design
-      - run: ./test_fail; test $? -eq 1
+      - run: |
+           ./test_fail
+           test $? -eq 1
         working-directory: /home/runner/work/Optimal-Design/Optimal-Design
