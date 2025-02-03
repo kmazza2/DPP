@@ -18,7 +18,7 @@ program test_leak
    do
       print *, i
       if (i < 0) then
-         stop 'Silent integer overflow.'
+         error stop 'Silent integer overflow.'
       end if
       matrix3 = attempt_leak(matrix1, matrix2, i)
       i = i + 1

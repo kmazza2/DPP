@@ -44,7 +44,7 @@ LWORK = MIN( LWMAX, INT( WORK( 1 ) ) )
 call DGESVD( 'All', 'All', M, N, A, LDA, S, U, LDU, VT, LDVT, WORK, LWORK, INFO )
 if( INFO .gt. 0 ) then
    write(*,*) 'The algorithm computing SVD failed to converge.'
-   stop
+   error stop
 end if 
 
 sv1_resid = abs(sv1 - S(1))

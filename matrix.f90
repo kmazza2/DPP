@@ -39,7 +39,7 @@ contains
          (size(m1%array, 1) /= size(m2%array, 1)) .or. &
          (size(m1%array, 2) /= size(m2%array, 2)) &
       ) then
-         stop 'Attempted to add matrices with different shapes.'
+         error stop 'Attempted to add matrices with different shapes.'
       end if
       dr64m_add_dr64m = new_dr64m(m1%array + m2%array)
    end function dr64m_add_dr64m
@@ -47,7 +47,7 @@ contains
       type(dr64m) :: dr64m_mul_dr64m
       type(dr64m), intent(in) :: m1, m2
       if (size(m1%array, 2) /= size(m2%array, 1)) then
-         stop 'Attempted to multiply matrices of incompatible shapes.'
+         error stop 'Attempted to multiply matrices of incompatible shapes.'
       end if
       dr64m_mul_dr64m = new_dr64m(matmul(m1%array, m2%array))
    end function dr64m_mul_dr64m
@@ -135,7 +135,7 @@ contains
       call mminfo(unit,rep,field,symm,nrows,ncols,nnz)
       call mmread(unit,rep,field,symm,nrows,ncols,nnz,nnzmax, indx,jndx,ival,rval,cval)
       if( .not. ((rep .eq. 'array') .and. (field .eq. 'real')) ) then
-         stop 'dr64m_from_mtx only supports dense real matrices'
+         error stop 'dr64m_from_mtx only supports dense real matrices'
       endif
       dr64m_from_mtx = new_dr64m(reshape(source=rval(:nrows*ncols), shape=[nrows, ncols]))
    end function dr64m_from_mtx
@@ -157,7 +157,7 @@ contains
       type(dr64m) :: random_dr64m
       real(real64), allocatable, dimension(:,:) :: arr
       if (.not. (rows > 0 .and. columns > 0)) then
-         stop 'random_dr64m requires rows, columns > 0'
+         error stop 'random_dr64m requires rows, columns > 0'
       end if
       allocate (arr(rows, columns))
       call random_number(arr)

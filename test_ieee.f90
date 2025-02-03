@@ -163,7 +163,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real64_ieee_overflow
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -200,7 +200,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real64_ieee_underflow
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -237,7 +237,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real64_ieee_divide_by_zero
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -274,7 +274,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real64_ieee_invalid
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -311,7 +311,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real128_ieee_overflow
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -348,7 +348,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real128_ieee_underflow
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -385,7 +385,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real128_ieee_divide_by_zero
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -422,7 +422,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_real128_ieee_invalid
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
@@ -459,7 +459,7 @@ program test
            inexact_flag_set .or. &
            invalid_flag_set &
    ) then
-      stop 'Failed to reset IEEE exception flag.'
+      error stop 'Failed to reset IEEE exception flag.'
    end if
    call test_log_negative
    call ieee_get_flag(ieee_overflow, overflow_flag_set)
