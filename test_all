@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# can try `./test_fail || ./test_fail2 || ... || ./test_failm'
-./test_fail
+# can try `test/test_fail || test/test_fail2 || ... || test/test_failm'
+test/test_fail
 if [ $? -eq 0 ]
 then
    exit 1
 fi
 
-# can try `./test_main1 && ./test_main2 & ... & ./test_mainn'
-./test_main
+# can try `test/test_main1 && test/test_main2 & ... & test/test_mainn'
+test/test_main
 if [ $? -ne 0 ]
 then
    exit 1
