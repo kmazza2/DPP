@@ -23,11 +23,18 @@ contains
        integer(int32) :: i, n
        type(dr64m) :: standard_basis
        real(real64), dimension(n) :: tmp
+       if (n < 1_int32 .or. i < 1_int32 .or. i > n) then
+          error stop 'Must have i < n.'
+       end if
        tmp = 0.0_real64
        tmp(i) = 1.0_real64
        standard_basis = new_dr64m(reshape(source = tmp, shape = [n, 1]))
     end function standard_basis
     function orthogonal_subspace_basis(i, V, tol)
+       type(dr64m) :: orthogonal_subspace_basis
+       integer(int32) :: i
+       type(dr64m) :: V
+       real(real64) :: tol
        error stop 'Not implemented'
     end function orthogonal_subspace_basis
 !   function new_dr64m(arr)
