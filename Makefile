@@ -30,4 +30,4 @@ test/test_get_dr64m_col:	test/test_get_dr64m_col.f90 lib/matrix.o
 lib/vector_spaces.o:	matrix.f90 lib/matrix.o
 	gfortran -std=f2018 -o lib/vector_spaces.o -c vector_spaces.f90 -L lib -l:matrix.o
 test/test_vector_spaces:	test/test_vector_spaces.f90 lib/vector_spaces.o
-	gfortran -std=f2018 -o test/test_vector_spaces test/test_vector_spaces.f90 -L lib -l:vector_spaces.o
+	gfortran -std=f2018 -o test/test_vector_spaces test/test_vector_spaces.f90 -L lib -l:vector_spaces.o -l:matrix.o -l:matrix_market.o -l:matrix_market_subs.o -llapack -lrefblas

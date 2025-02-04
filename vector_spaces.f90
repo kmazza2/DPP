@@ -19,7 +19,15 @@ module vector_spaces
 !      module procedure real64_mul_dr64m
 !   end interface operator(*)
 contains
-    function orthogonal_subspace_basis(i, V)
+    function standard_basis(i, n)
+       integer(int32) :: i, n
+       type(dr64m) :: standard_basis
+       real(real64), dimension(n) :: tmp
+       tmp = 0.0_real64
+       tmp(i) = 1.0_real64
+       standard_basis = new_dr64m(reshape(source = tmp, shape = [n, 1]))
+    end function standard_basis
+    function orthogonal_subspace_basis(i, V, tol)
        error stop 'Not implemented'
     end function orthogonal_subspace_basis
 !   function new_dr64m(arr)
