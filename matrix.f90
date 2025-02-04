@@ -4,7 +4,6 @@ module matrix
    use, intrinsic :: ieee_features
    ! Dense Real64Matrix
    ! NEVER ASSIGN to dr64m%array outside this module
-   ! TODO: FROM_MTX
    type dr64m
       real(real64), allocatable, dimension(:,:) :: array
       integer(int32), dimension(2) :: shape
