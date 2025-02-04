@@ -1,6 +1,6 @@
-all : diagnostics/test_ieee diagnostics/test_lapack diagnostics/test_matrix_market diagnostics/test_matrix diagnostics/test_leak test/test_main test/test_fail
+all : diagnostics/test_ieee diagnostics/test_lapack diagnostics/test_matrix_market diagnostics/test_matrix diagnostics/test_leak test/test_main test/test_fail test/test_get_dr64m_row test/test_get_dr64m_col
 clean: .
-	rm diagnostics/test_ieee diagnostics/test_lapack diagnostics/test_matrix_market diagnostics/test_matrix diagnostics/test_leak test/test_main test/test_fail lib/matrix_market.o lib/matrix_market_subs.o lib/matrix.o matrix.mod matrix_market.mod
+	rm diagnostics/test_ieee diagnostics/test_lapack diagnostics/test_matrix_market diagnostics/test_matrix diagnostics/test_leak test/test_main test/test_fail test/test_get_dr64m_row test/test_get_dr64m_col lib/matrix_market.o lib/matrix_market_subs.o lib/matrix.o matrix.mod matrix_market.mod
 diagnostics/test_ieee:	diagnostics/test_ieee.f90
 	gfortran -std=f2018 -Wall -pedantic-errors -Wextra -Wsurprising -fsanitize=undefined -o diagnostics/test_ieee diagnostics/test_ieee.f90
 diagnostics/test_lapack:	diagnostics/test_lapack.f90
@@ -23,3 +23,7 @@ test/test_main:	test/test_main.f90
 	gfortran -std=f2018 -o test/test_main test/test_main.f90
 test/test_fail:	test/test_fail.f90
 	gfortran -std=f2018 -o test/test_fail test/test_fail.f90
+test/test_get_dr64m_row:	test/test_get_dr64m_row.f90 matrix.o
+	gfortran -std=f2018 -o test/test_get_dr64m_row test/test_get_dr64m_row.f90 -L lib -l:matrix.o -l:matrix_market.o -l:matrix_market_subs.o -llapack -lrefblas
+test/test_get_dr64m_col:	test/test_get_dr64m_col.f90 matrix.o
+	gfortran -std=f2018 -o test/test_get_dr64m_col test/test_get_dr64m_col.f90 -L lib -l:matrix.o -l:matrix_market.o -l:matrix_market_subs.o -llapack -lrefblas

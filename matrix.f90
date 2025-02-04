@@ -163,5 +163,25 @@ contains
       call random_number(arr)
       random_dr64m = new_dr64m(arr)
    end function random_dr64m
+   function get_dr64m_row(matrix, row)
+      type(dr64m) :: matrix
+      integer(int32) :: row
+      type(dr64m) :: get_dr64m_row
+
+      if (row < 1 .or. row > matrix%shape(1)) then
+         error stop 'Row does not exit'
+      end if
+      get_dr64m_row = new_dr64m(reshape(source = matrix%array(row,:), shape=[1, matrix%shape(2)]))
+   end function get_dr64m_row
+   function get_dr64m_col(matrix, column)
+      type(dr64m) :: matrix
+      integer(int32) :: column
+      type(dr64m) :: get_dr64m_col
+
+      if (column < 1 .or. column > matrix%shape(2)) then
+         error stop 'Column does not exist'
+      end if
+      get_dr64m_col = new_dr64m(reshape(source = matrix%array(:,column), shape = [matrix%shape(1), 1]))
+   end function get_dr64m_col
 
 end module matrix
