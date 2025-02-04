@@ -16,6 +16,7 @@ program test_matrix
    type(dr64m) :: matrix11, matrix12
    type(dr64m) :: matrix13
    type(dr64m) :: matrix14, matrix15
+   type(dr64m) :: matrix16, matrix17, matrix18
 
    matrix1 = new_dr64m(reshape(source = [ &
            1.0_real64, 4.0_real64, 2.0_real64, 5.0_real64, 3.0_real64, 6.0_real64 &
@@ -96,5 +97,13 @@ program test_matrix
    matrix14 = new_dr64m(reshape(source = [ 1.0_real64, 3.0_real64, 2.0_real64, 4.0_real64 ], shape = [2, 2]))
    matrix15 = new_dr64m(reshape(source = [ 2.0_real64, 3.0_real64, 2.0_real64, 4.0_real64 ], shape = [2, 2]))
    print *, all(matrix14%array == matrix15%array)
+
+   matrix16 = new_dr64m(reshape(source = [ &
+           1.0_real64, 4.0_real64, 2.0_real64, 5.0_real64, 3.0_real64, 6.0_real64 &
+           ], shape = [2, 3]))
+   matrix17 = get_dr64m_row(matrix16, 2)
+   matrix18 = get_dr64m_col(matrix16, 3)
+   call print_dr64m(matrix17)
+   call print_dr64m(matrix18)
 
 end program test_matrix
