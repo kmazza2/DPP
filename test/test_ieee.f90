@@ -1,4 +1,4 @@
-program test_main
+program test_ieee
 
    use, intrinsic :: ieee_arithmetic
    use, intrinsic :: ieee_features
@@ -355,7 +355,7 @@ program test_main
       error stop 'Minimal collection of IEEE features not supported.'
    end if
 
-end program test_main
+end program test_ieee
 
 subroutine test_real64_ieee_overflow
    use, intrinsic :: ieee_arithmetic
