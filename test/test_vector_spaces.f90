@@ -1,4 +1,4 @@
-program test_get_dr64m_row
+program test_vector_spaces
 
    use, intrinsic :: iso_fortran_env
    use :: matrix
@@ -11,6 +11,7 @@ program test_get_dr64m_row
    type(dr64m) :: b_3_3
 
    type(dr64m) :: A, B
+   type(dr64m) :: C, D
 
    b_2_4 = standard_basis(2_int32, 4_int32)
    b_1_1 = standard_basis(1_int32, 1_int32)
@@ -40,6 +41,20 @@ program test_get_dr64m_row
       error stop 'Nullspace of A should be 2-dimensional'
    end if
 
+   C = new_dr64m( &
+      reshape( &
+         source = [ &
+            1.0_real64, 3.0_real64, 5.0_real64, &
+            2.0_real64, 4.0_real64, 6.0_real64 &
+         ], &
+         shape = [3, 2]  &
+      ) &
+   )
+   D = nullspace_basis(C, 0.0001_real64)
+   if (D%shape(2) /= 0) then
+      error stop 'Nullspace of C should be 0-dimensional'
+   end if
+
    ! test orthogonal_subspace_basis(i, V, tol)
 
-end program test_get_dr64m_row
+end program test_vector_spaces
