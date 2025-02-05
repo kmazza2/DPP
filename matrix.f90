@@ -182,5 +182,13 @@ contains
       end if
       get_dr64m_col = new_dr64m(reshape(source = matrix%array(:,column), shape = [matrix%shape(1), 1]))
    end function get_dr64m_col
+   function dr64m_transpose(mat)
+      type(dr64m) :: mat
+      type(dr64m) :: dr64m_transpose
+      real(real64), allocatable, dimension(:,:) :: tmp
+      allocate (tmp(mat%shape(2), mat%shape(1)))
+      tmp = transpose(mat%array)
+      dr64m_transpose = new_dr64m(tmp)
+   end function dr64m_transpose
 
 end module matrix
