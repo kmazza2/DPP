@@ -35,26 +35,26 @@ contains
        rows = decomp%S%shape(1)
        cols = decomp%S%shape(2)
        n = min(rows, cols)
-       smallest = n + 1
+       smallest = 0
        find_smallest: do i = 1,n
           if (abs(decomp%S%array(i,i)) < tol) then
              smallest = i
              exit find_smallest
           end if
        end do find_smallest
-       if (smallest == n + 1) then
-          error stop 'smallest == n + 1: this case not yet handled'
-       end if
        nullspace_basis = new_dr64m( &
           reshape( &
              source = [ ( 0.0_real64, j=1,( smallest * decomp%U%shape(1) ) ) ], &
              shape = [decomp%U%shape(1), smallest] &
           ) &
        )
-       do i = smallest,n
-          basis_vector = dr64m_transpose(get_dr64m_row(decomp%VT, i))
-          nullspace_basis%array(:,(i - smallest + 1)) = basis_vector%array(:,1)
-       end do
+       if (smallest > 0) then
+          do i = smallest,n
+             basis_vector = dr64m_transpose(get_dr64m_row(decomp%VT, i))
+             nullspace_basis%array(:,(i - smallest + 1)) = &
+                basis_vector%array(:,1)
+          end do
+       end if
     end function nullspace_basis
 
     function orthogonal_subspace_basis(i, V, tol)
