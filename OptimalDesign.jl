@@ -1,6 +1,6 @@
 module OptimalDesign
 
-export orthogonal_subspace_basis, sample_DPP
+export orthogonal_subspace_basis, sample_DPP, weighted_sample, bernoulli_trial
 
 import LinearAlgebra as LA
 using Random: rand, Xoshiro
@@ -34,14 +34,24 @@ function sample_DPP(L, tol)
     @assert all(v .<= 1.0)
     N = size(L)[1]
     Y = Set()
-    V = M[:, map(l -> rand(rng) < l / (l + 1.0), v)]
+    V = M[:, map(l -> bernoulli_trial(l / (l + 1.0)), v)]
     while size(V)[2] != 0
-        weights = (1.0 / size(V)[2]) .* LA.diag(V * V')
-        i = min(N - sum(rand(rng) .< cumsum(weights)) + 1, N)
+        weights = LA.diag(V * V')
+        i = weighted_sample(weights)
         Y = union(Y, Set(i))
         V = orthogonal_subspace_basis(V, LA.I[1:N,i], tol)
     end
     return Y
+end
+
+function weighted_sample(weights)
+    N = length(weights)
+    weights = weights ./ sum(weights)
+    return min(N - sum(rand(rng) .< cumsum(weights)) + 1, N)
+end
+
+function bernoulli_trial(p)
+    return rand(rng) < p
 end
 
 end
