@@ -9,5 +9,5 @@ jobs:
       - uses: julia-actions/setup-julia@v2
         with:
           version: '1.11'
-      - run: ./test.jl
+      - run: julia test.jl
         working-directory: /home/runner/work/Optimal-Design/Optimal-Design
