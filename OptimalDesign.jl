@@ -1,6 +1,6 @@
 module OptimalDesign
 
-export orthogonal_subspace_basis, sample_DPP, weighted_sample, bernoulli_trial
+export orthogonal_subspace_basis, sample_L_ens, weighted_sample, bernoulli_trial
 
 import LinearAlgebra as LA
 using Random: rand, Xoshiro
@@ -27,11 +27,10 @@ function orthogonal_subspace_basis(A, u, tol)
     return spanning_set_basis
 end
 
-function sample_DPP(L, tol)
+function sample_L_ens(L, tol)
     @assert LA.issymmetric(L)
     v, M = LA.eigen(L)
     @assert all(v .>= 0.0)
-    @assert all(v .<= 1.0)
     N = size(L)[1]
     Y = Set()
     V = M[:, map(l -> bernoulli_trial(l / (l + 1.0)), v)]
