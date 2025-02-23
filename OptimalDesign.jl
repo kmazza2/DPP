@@ -1,6 +1,6 @@
 module OptimalDesign
 
-export orthogonal_subspace_basis
+export orthogonal_subspace_basis, sample_DPP
 
 import LinearAlgebra as LA
 
@@ -22,6 +22,11 @@ function orthogonal_subspace_basis(A, u, tol)
         ] .> tol
     ]
     return spanning_set_basis
+end
+
+function sample_DPP(L)
+    # dummy implementation
+    return Set((1,2,3))
 end
 
 end
