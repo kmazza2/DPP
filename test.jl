@@ -1,4 +1,5 @@
 include("OptimalDesign.jl")
+import LinearAlgebra as LA
 import .OptimalDesign as OD
 
 tol = 1e-5
@@ -38,23 +39,24 @@ p_hat = sum(map(i -> OD.bernoulli_trial(p), 1:trials)) / trials
 resid = p - p_hat
 @assert abs(resid) < tol
 
-sub_0 = Set()
-p_sub_0 = 1.0 / 3.75
-sub_1 = Set(1)
-p_sub_1 = 0.75 / 3.75
-sub_2 = Set(2)
-p_sub_2 = 0.75 / 3.75
-sub_3 = Set(3)
-p_sub_3 = 0.25 / 3.75
-sub_12 = Set((1,2))
-p_sub_12 = 0.5 / 3.75
-sub_13 = Set((1,3))
-p_sub_13 = 0.1875 / 3.75
-sub_23 = Set((2,3))
-p_sub_23 = 0.1875 / 3.75
-sub_123 = Set((1,2,3))
-p_sub_123 = 0.125 / 3.75
 A = Float64.([3/4 -1/4 0; -1/4 3/4 0; 0 0 1/4])
+scale_factor = 1.0 / LA.det(A + LA.I)
+sub_0 = Set()
+p_sub_0 = 1.0 * scale_factor
+sub_1 = Set(1)
+p_sub_1 = 0.75 * scale_factor
+sub_2 = Set(2)
+p_sub_2 = 0.75 * scale_factor
+sub_3 = Set(3)
+p_sub_3 = 0.25 * scale_factor
+sub_12 = Set((1,2))
+p_sub_12 = 0.5 * scale_factor
+sub_13 = Set((1,3))
+p_sub_13 = 0.1875 * scale_factor
+sub_23 = Set((2,3))
+p_sub_23 = 0.1875 * scale_factor
+sub_123 = Set((1,2,3))
+p_sub_123 = 0.125 * scale_factor
 trials = 10000
 tol = 1e-5
 result = map(i -> OD.sample_L_ens(A, tol), 1:trials)
