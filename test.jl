@@ -32,18 +32,17 @@ sub_23 = Set((2,3))
 p_sub_23 = 0.1875
 sub_123 = Set((1,2,3))
 p_sub_123 = 0.125
-tol = 1e-1
 A = Float64.([3/4 -1/4 0; -1/4 3/4 0; 0 0 1/4])
-trials = 1000
-result = map(i -> OD.sample_DPP(A), 1:trials)
-p_hat_sub_0 = sum(map(s -> isequal(sub_0, s), result)) / trials
-p_hat_sub_1 = sum(map(s -> isequal(sub_1, s), result)) / trials
-p_hat_sub_2 = sum(map(s -> isequal(sub_2, s), result)) / trials
-p_hat_sub_3 = sum(map(s -> isequal(sub_3, s), result)) / trials
-p_hat_sub_12 = sum(map(s -> isequal(sub_12, s), result)) / trials
-p_hat_sub_13 = sum(map(s -> isequal(sub_13, s), result)) / trials
-p_hat_sub_23 = sum(map(s -> isequal(sub_23, s), result)) / trials
-p_hat_sub_123 = sum(map(s -> isequal(sub_123, s), result)) / trials
+trials = 10000
+result = map(i -> OD.sample_DPP(A, tol), 1:trials)
+p_hat_sub_0 = sum(map(s -> issubset(sub_0, s), result)) / trials
+p_hat_sub_1 = sum(map(s -> issubset(sub_1, s), result)) / trials
+p_hat_sub_2 = sum(map(s -> issubset(sub_2, s), result)) / trials
+p_hat_sub_3 = sum(map(s -> issubset(sub_3, s), result)) / trials
+p_hat_sub_12 = sum(map(s -> issubset(sub_12, s), result)) / trials
+p_hat_sub_13 = sum(map(s -> issubset(sub_13, s), result)) / trials
+p_hat_sub_23 = sum(map(s -> issubset(sub_23, s), result)) / trials
+p_hat_sub_123 = sum(map(s -> issubset(sub_123, s), result)) / trials
 resid = [
     p_sub_0 - p_hat_sub_0
     p_sub_1 - p_hat_sub_1
@@ -54,4 +53,5 @@ resid = [
     p_sub_23 - p_hat_sub_23
     p_sub_123 - p_hat_sub_123
 ]
+tol = 1e-1
 @assert all(abs.(resid) .< tol)
