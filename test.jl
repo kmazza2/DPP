@@ -7,4 +7,3 @@ B = OD.orthogonal_subspace_basis(
     standard_basis, e3, 1e-5
 )
 @assert size(B, 2) == 2
-@assert false
