@@ -6,9 +6,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - run: ./configure
-        working-directory: /home/runner/work/Optimal-Design/Optimal-Design
-      - run: make
-        working-directory: /home/runner/work/Optimal-Design/Optimal-Design
-      - run: ./test_all
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.11'
+      - run: ./test.jl
         working-directory: /home/runner/work/Optimal-Design/Optimal-Design
