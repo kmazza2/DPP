@@ -39,7 +39,11 @@ p_hat = sum(map(i -> OD.bernoulli_trial(p), 1:trials)) / trials
 resid = p - p_hat
 @assert abs(resid) < tol
 
-A = Float64.([3/4 -1/4 0; -1/4 3/4 0; 0 0 1/4])
+A = Float64.(
+      1  * [ -1/sqrt(2) 1/sqrt(2) 0 ]' * [ -1/sqrt(2) 1/sqrt(2) 0 ] +
+    1/2  * [  1/sqrt(2) 1/sqrt(2) 0 ]' * [  1/sqrt(2) 1/sqrt(2) 0 ] +
+    1/4  * [          0         0 1 ]' * [          0         0 1 ]
+)
 scale_factor = 1.0 / LA.det(A + LA.I)
 sub_0 = Set()
 p_sub_0 = 1.0 * scale_factor
