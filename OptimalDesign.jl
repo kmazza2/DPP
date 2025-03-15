@@ -4,8 +4,13 @@ export orthogonal_subspace_basis, sample_L_ens, weighted_sample, bernoulli_trial
 
 import LinearAlgebra as LA
 
+"Returns orthonormal basis for subspace of column space of A orthogonal to u."
 function orthogonal_subspace_basis(A, u, tol)
+    # use SVD to find orthnormal basis for nullspace of u' * A
     product_decomp = LA.svd(u' * A, full=true)
+    # columns of V corresponding to zeros on diagonal of S
+    # form orthonormal basis for nullspace of matrix
+    # (Trefethen p. 33, p. 36)
     nullspace_basis = product_decomp.V[
         :,
         [
@@ -13,7 +18,17 @@ function orthogonal_subspace_basis(A, u, tol)
             zeros(size(A,2) - length(product_decomp.S))
         ] .< tol
     ]
+    # columns of A * nullspace_basis are spanning set for subspace of
+    # column space of A orthogonal to u
+    #
+    # use SVD to find orthonormal basis for column space of
+    # A * nullspace_basis (since the column space is the
+    # subspace of the column space of A orthogonal to u,
+    # this completes the computation)
     spanning_set_decomp = LA.svd(A * nullspace_basis, full=true)
+    # columns of U corresponding to nonzero values on diagonal
+    # of S form orthonormal basis for column space of matrix
+    # (Trefethen p. 33, p. 36)
     spanning_set_basis = spanning_set_decomp.U[
         :,
         [
