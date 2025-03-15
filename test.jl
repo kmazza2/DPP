@@ -1,6 +1,9 @@
 include("OptimalDesign.jl")
 import LinearAlgebra as LA
 import .OptimalDesign as OD
+using Random: rand, Xoshiro
+
+rng = Xoshiro(1234)
 
 tol = 1e-5
 standard_basis = Float64.([1 0 0; 0 1 0; 0 0 1])
@@ -19,7 +22,7 @@ B = OD.orthogonal_subspace_basis(
 
 weights = [0.1, 0.3, 0.4, 0.2]
 trials = 10000
-result = map(i -> OD.weighted_sample(weights), 1:trials)
+result = map(i -> OD.weighted_sample(weights, rng), 1:trials)
 p_hat_1 = sum(map(n -> isequal(n, 1), result)) / trials
 p_hat_2 = sum(map(n -> isequal(n, 2), result)) / trials
 p_hat_3 = sum(map(n -> isequal(n, 3), result)) / trials
@@ -35,7 +38,7 @@ resid = [
 
 p = 0.63
 trials = 10000
-p_hat = sum(map(i -> OD.bernoulli_trial(p), 1:trials)) / trials
+p_hat = sum(map(i -> OD.bernoulli_trial(p, rng), 1:trials)) / trials
 resid = p - p_hat
 @assert abs(resid) < tol
 
@@ -63,7 +66,7 @@ sub_123 = Set((1,2,3))
 p_sub_123 = 0.125 * scale_factor
 trials = 10000
 tol = 1e-5
-result = map(i -> OD.sample_L_ens(A, tol), 1:trials)
+result = map(i -> OD.sample_L_ens(A, tol, rng), 1:trials)
 p_hat_sub_0 = sum(map(s -> isequal(sub_0, s), result)) / trials
 p_hat_sub_1 = sum(map(s -> isequal(sub_1, s), result)) / trials
 p_hat_sub_2 = sum(map(s -> isequal(sub_2, s), result)) / trials
