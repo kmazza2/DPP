@@ -1,6 +1,15 @@
 module OptimalDesign
 
-export orthonormal_nullspace_basis, orthonormal_columnspace_basis, orthogonal_subspace_basis, sample_L_ensemble, weighted_sample, bernoulli_trial, Eigenpair, SpectralDecomposition, orthonormal_spectral_decomposition, orthonormal_spectral_decomposition_matrix
+export orthonormal_nullspace_basis
+export orthonormal_columnspace_basis
+export orthogonal_subspace_basis
+export sample_L_ensemble
+export weighted_sample
+export bernoulli_trial
+export Eigenpair
+export SpectralDecomposition
+export orthonormal_spectral_decomposition
+export orthonormal_spectral_decomposition_matrix
 
 import LinearAlgebra as LA
 
