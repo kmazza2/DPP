@@ -87,3 +87,20 @@ resid = [
 ]
 tol = 1e-1
 @assert LA.norm(resid, Inf) < tol
+
+construction_successful::Bool = false
+try
+    _ = OD.Eigenpair(2.5, [1, 2], 0.01)
+    global construction_successful = true
+catch e
+    global construction_successful = false
+end
+@assert construction_successful
+
+try
+    _ = OD.Eigenpair(0.01, [3, 4], 0.1)
+    global construction_successful = true
+catch e
+    global construction_successful = false
+end
+@assert !construction_successful

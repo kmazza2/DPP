@@ -65,4 +65,14 @@ function bernoulli_trial(p, rng)
     return rand(rng) < p
 end
 
+struct Eigenpair
+    val::Float64
+    vec::Vector{Float64}
+    Eigenpair(val, vec, tol) = (
+        abs(val) < tol ?
+        throw(DomainError("Eigenpair val cannot be zero")) :
+        new(val, vec)
+    )
+end
+
 end
