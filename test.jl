@@ -34,7 +34,7 @@ resid = [
     weights[3] - p_hat_3
     weights[4] - p_hat_4
 ]
-@assert all(abs.(resid) .< tol)
+@assert LA.norm(resid, Inf) < tol
 
 p = 0.63
 trials = 10000
@@ -86,4 +86,4 @@ resid = [
     p_sub_123 - p_hat_sub_123
 ]
 tol = 1e-1
-@assert all(abs.(resid) .< tol)
+@assert LA.norm(resid, Inf) < tol
