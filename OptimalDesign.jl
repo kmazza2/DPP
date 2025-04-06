@@ -1,45 +1,62 @@
 module OptimalDesign
 
-export orthogonal_subspace_basis, sample_L_ens, weighted_sample, bernoulli_trial
+export orthonormal_nullspace_basis, orthonormal_columnspace_basis, orthogonal_subspace_basis, sample_L_ensemble, weighted_sample, bernoulli_trial, Eigenpair, SpectralDecomposition, orthonormal_spectral_decomposition, orthonormal_spectral_decomposition_matrix
 
 import LinearAlgebra as LA
 
-"Returns orthonormal basis for subspace of column space of A orthogonal to u."
-function orthogonal_subspace_basis(A, u, tol)
-    # use SVD to find orthnormal basis for nullspace of u' * A
-    product_decomp = LA.svd(u' * A, full=true)
+"Returns orthonormal basis for nullspace of A as columns of returned matrix."
+function orthonormal_nullspace_basis(A, tol)
+    # use SVD to find orthnormal basis for nullspace of A
+    #
     # columns of V corresponding to zeros on diagonal of S
     # form orthonormal basis for nullspace of matrix
     # (Trefethen p. 33, p. 36)
-    nullspace_basis = product_decomp.V[
+    decomp = LA.svd(A, full=true)
+    nullspace_basis = decomp.V[
         :,
         [
-            abs.(product_decomp.S);
-            zeros(size(A,2) - length(product_decomp.S))
+            abs.(decomp.S);
+            zeros(size(A,2) - length(decomp.S))
         ] .< tol
     ]
-    # columns of A * nullspace_basis are spanning set for subspace of
-    # column space of A orthogonal to u
+    return nullspace_basis
+end
+
+
+"Returns orthonormal basis for columnspace of A as columns of returned matrix."
+function orthonormal_columnspace_basis(A, tol)
+    # use SVD to find orthnormal basis for columnspace of A
     #
-    # use SVD to find orthonormal basis for column space of
-    # A * nullspace_basis (since the column space is the
-    # subspace of the column space of A orthogonal to u,
-    # this completes the computation)
-    spanning_set_decomp = LA.svd(A * nullspace_basis, full=true)
     # columns of U corresponding to nonzero values on diagonal
     # of S form orthonormal basis for column space of matrix
     # (Trefethen p. 33, p. 36)
-    spanning_set_basis = spanning_set_decomp.U[
+    decomp = LA.svd(A, full=true)
+    columnspace_basis = decomp.U[
         :,
         [
-            abs.(spanning_set_decomp.S);
-            zeros(size(A,1) - length(spanning_set_decomp.S))
+            abs.(decomp.S);
+            zeros(size(A,1) - length(decomp.S))
         ] .> tol
     ]
+    return columnspace_basis
+end
+
+"Returns orthonormal basis for subspace of column space of A orthogonal to u."
+function orthogonal_subspace_basis(A, u, tol)
+    nullspace_basis = orthonormal_nullspace_basis(u' * A, tol)
+    # columns of A * nullspace_basis are spanning set for subspace of
+    # column space of A orthogonal to u
+    #
+    # find orthonormal basis for column space of A * nullspace_basis
+    # (since the column space is the subspace of the column space
+    # of A orthogonal to u, this completes the computation)
+    spanning_set_basis = orthonormal_columnspace_basis(
+        A * nullspace_basis, tol
+    )
     return spanning_set_basis
 end
 
-function sample_L_ens(L, tol, rng)
+function sample_L_ensemble(L, tol, rng)
     @assert LA.issymmetric(L)
     v, M = LA.eigen(L)
     @assert all(v .>= 0.0)
@@ -68,11 +85,82 @@ end
 struct Eigenpair
     val::Float64
     vec::Vector{Float64}
-    Eigenpair(val, vec, tol) = (
-        abs(val) < tol ?
-        throw(DomainError("Eigenpair val cannot be zero")) :
-        new(val, vec)
+end
+
+struct OrthonormalSpectralDecomposition
+    eigenpairs::Vector{Eigenpair}
+    original_matrix_size::Tuple{Int, Int}
+    function OrthonormalSpectralDecomposition(
+            eigenpairs::Vector{Eigenpair},
+            original_matrix_size::Tuple{Int, Int},
+            tol
     )
+        if original_matrix_size[1] <= 0 || original_matrix_size[2] <= 0
+            error(
+                "original matrix must have positive numbers of rows and columns"
+            )
+        end
+        if original_matrix_size[1] != original_matrix_size[2]
+            error(
+                "original matrix must be square"
+            )
+        end
+        n = length(eigenpairs)
+        for i in 1:n
+            if abs(LA.norm(eigenpairs[i].vec) - 1) > tol
+                error("eigenvector not unit length")
+            end
+        end
+        for i in 1:(n-1)
+            for j in (i+1):n
+                if (
+                        abs(eigenpairs[i].val) > tol &&
+                        abs(eigenpairs[j].val) > tol &&
+                        abs(eigenpairs[i].vec' * eigenpairs[j].vec) > tol
+                )
+                    error("eigenvectors not orthogonal")
+                end
+            end
+        end
+        return new(eigenpairs, original_matrix_size)
+    end
+end
+
+function orthonormal_spectral_decomposition(A::Matrix{Float64}, tol)
+    if !LA.issymmetric(A)
+        throw(DomainError("A must be symmetric"))
+    end
+    eigenvalues = LA.eigvals(A)
+    eigenpairs = Vector{Eigenpair}()
+    for eigenvalue in eigenvalues
+        if abs(eigenvalue) > tol
+            ortho_nullspace_basis = orthonormal_nullspace_basis(
+                A - eigenvalue * LA.I,
+                tol
+            )
+            nullspace_dim = size(ortho_nullspace_basis, 2)
+            for i in 1:nullspace_dim
+                push!(
+                    eigenpairs,
+                    Eigenpair(eigenvalue, ortho_nullspace_basis[:, i])
+                )
+            end
+        end
+    end
+    return OrthonormalSpectralDecomposition(eigenpairs, size(A), tol)
+end
+
+function orthonormal_spectral_decomposition_matrix(decomp::OrthonormalSpectralDecomposition)
+    if length(decomp.eigenpairs) == 0
+        return zeros(
+            decomp.original_matrix_size[1],
+            decomp.original_matrix_size[2]
+        )
+    else
+        return sum(
+            [pair.val * pair.vec * pair.vec' for pair in decomp.eigenpairs]
+        )
+    end
 end
 
 end

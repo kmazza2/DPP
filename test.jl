@@ -66,7 +66,7 @@ sub_123 = Set((1,2,3))
 p_sub_123 = 0.125 * scale_factor
 trials = 10000
 tol = 1e-5
-result = map(i -> OD.sample_L_ens(A, tol, rng), 1:trials)
+result = map(i -> OD.sample_L_ensemble(A, tol, rng), 1:trials)
 p_hat_sub_0 = sum(map(s -> isequal(sub_0, s), result)) / trials
 p_hat_sub_1 = sum(map(s -> isequal(sub_1, s), result)) / trials
 p_hat_sub_2 = sum(map(s -> isequal(sub_2, s), result)) / trials
@@ -88,19 +88,20 @@ resid = [
 tol = 1e-1
 @assert LA.norm(resid, Inf) < tol
 
-construction_successful::Bool = false
-try
-    _ = OD.Eigenpair(2.5, [1, 2], 0.01)
-    global construction_successful = true
-catch e
-    global construction_successful = false
-end
-@assert construction_successful
+A = [0.0 0.0 0.0; 0.0 0.0 0.0; 0.0 0.0 0.0]
+decomp = OD.orthonormal_spectral_decomposition(A, tol)
+decomp_matrix = OD.orthonormal_spectral_decomposition_matrix(decomp)
+resid = A - decomp_matrix
+@assert LA.norm(resid, Inf) < tol
 
-try
-    _ = OD.Eigenpair(0.01, [3, 4], 0.1)
-    global construction_successful = true
-catch e
-    global construction_successful = false
-end
-@assert !construction_successful
+A = [-1.0 0.0 0.0; 0.0 2.0 0.0; 0.0 0.0 -3.0]
+decomp = OD.orthonormal_spectral_decomposition(A, tol)
+decomp_matrix = OD.orthonormal_spectral_decomposition_matrix(decomp)
+resid = A - decomp_matrix
+@assert LA.norm(resid, Inf) < tol
+
+A = [1.0 6.0; 6.0 1.0]
+decomp = OD.orthonormal_spectral_decomposition(A, tol)
+decomp_matrix = OD.orthonormal_spectral_decomposition_matrix(decomp)
+resid = A - decomp_matrix
+@assert LA.norm(resid, Inf) < tol
