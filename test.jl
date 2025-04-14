@@ -105,3 +105,10 @@ decomp = OD.orthonormal_spectral_decomposition(A, tol)
 decomp_matrix = OD.orthonormal_spectral_decomposition_matrix(decomp)
 resid = A - decomp_matrix
 @assert LA.norm(resid, Inf) < tol
+
+A = [2.0 0.0 0.0; 0.0 2.0 0.0; 0.0 0.0 3.0]
+decomp = OD.orthonormal_spectral_decomposition(A, tol)
+sorted_eigenvalues = sort([pair.val for pair in decomp.eigenpairs])
+@assert abs(sorted_eigenvalues[1] - 2.0) < tol
+@assert abs(sorted_eigenvalues[2] - 2.0) < tol
+@assert abs(sorted_eigenvalues[3] - 3.0) < tol

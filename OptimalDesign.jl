@@ -139,7 +139,7 @@ function orthonormal_spectral_decomposition(A::Matrix{Float64}, tol)
     if !LA.issymmetric(A)
         throw(DomainError("A must be symmetric"))
     end
-    eigenvalues = LA.eigvals(A)
+    eigenvalues = Set(LA.eigvals(A))
     eigenpairs = Vector{Eigenpair}()
     for eigenvalue in eigenvalues
         if abs(eigenvalue) > tol
