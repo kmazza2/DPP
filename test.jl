@@ -118,10 +118,18 @@ set_empty = Set()
 set_1 = Set([1])
 set_2 = Set([2])
 set_3 = Set([3])
+set_4 = Set([4])
 set_1_2 = Set([1 2])
 set_1_3 = Set([1 3])
+set_1_4 = Set([1 4])
 set_2_3 = Set([2 3])
+set_2_4 = Set([2 4])
+set_3_4 = Set([3 4])
 set_1_2_3 = Set([1 2 3])
+set_1_2_4 = Set([1 2 4])
+set_1_3_4 = Set([1 3 4])
+set_2_3_4 = Set([2 3 4])
+set_1_2_3_4 = Set([1 2 3 4])
 A = [1.0;;]
 tol = 1e-5
 simulation = map(_ -> OD.DPP(A, tol, rng), 1:trials)
@@ -186,3 +194,55 @@ tol = 1e-2
 @assert abs(set_1_3_expected_rel_freq - set_1_3_rel_freq) < tol
 @assert abs(set_2_3_expected_rel_freq - set_2_3_rel_freq) < tol
 @assert abs(set_1_2_3_expected_rel_freq - set_1_2_3_rel_freq) < tol
+A = [1/6 1/18 1/18 1/18; 1/18 19/162 13/162 13/162; 1/18 13/162 17/162 5/54; 1/18 13/162 5/54 17/162]
+tol = 1e-5
+simulation = map(_ -> OD.DPP(A, tol, rng), 1:trials)
+set_empty_rel_freq =sum(map(sample -> issubset(set_empty, sample), simulation)) / trials
+set_1_rel_freq =sum(map(sample -> issubset(set_1, sample), simulation)) / trials
+set_2_rel_freq = sum(map(sample -> issubset(set_2, sample), simulation)) / trials
+set_3_rel_freq = sum(map(sample -> issubset(set_3, sample), simulation)) / trials
+set_4_rel_freq = sum(map(sample -> issubset(set_4, sample), simulation)) / trials
+set_1_2_rel_freq = sum(map(sample -> issubset(set_1_2, sample), simulation)) / trials
+set_1_3_rel_freq = sum(map(sample -> issubset(set_1_3, sample), simulation)) / trials
+set_1_4_rel_freq = sum(map(sample -> issubset(set_1_4, sample), simulation)) / trials
+set_2_3_rel_freq = sum(map(sample -> issubset(set_2_3, sample), simulation)) / trials
+set_2_4_rel_freq = sum(map(sample -> issubset(set_2_4, sample), simulation)) / trials
+set_3_4_rel_freq = sum(map(sample -> issubset(set_3_4, sample), simulation)) / trials
+set_1_2_3_rel_freq = sum(map(sample -> issubset(set_1_2_3, sample), simulation)) / trials
+set_1_2_4_rel_freq = sum(map(sample -> issubset(set_1_2_4, sample), simulation)) / trials
+set_1_3_4_rel_freq = sum(map(sample -> issubset(set_1_3_4, sample), simulation)) / trials
+set_2_3_4_rel_freq = sum(map(sample -> issubset(set_2_3_4, sample), simulation)) / trials
+set_1_2_3_4_rel_freq = sum(map(sample -> issubset(set_1_2_3_4, sample), simulation)) / trials
+set_empty_expected_rel_freq = 1
+set_1_expected_rel_freq = 1/6
+set_2_expected_rel_freq = 19/162
+set_3_expected_rel_freq = 17/162
+set_4_expected_rel_freq = 17/162
+set_1_2_expected_rel_freq = 4/243
+set_1_3_expected_rel_freq = 7/486
+set_1_4_expected_rel_freq = 7/486
+set_2_3_expected_rel_freq = 77/13122
+set_2_4_expected_rel_freq = 77/13122
+set_3_4_expected_rel_freq = 16/6561
+set_1_2_3_expected_rel_freq = 31/39366
+set_1_2_4_expected_rel_freq = 31/39366
+set_1_3_4_expected_rel_freq = 13/39366
+set_2_3_4_expected_rel_freq = 5/39366
+set_1_2_3_4_expected_rel_freq = 1/59049
+tol = 1e-2
+@assert abs(set_empty_expected_rel_freq - set_empty_rel_freq) < tol
+@assert abs(set_1_expected_rel_freq - set_1_rel_freq) < tol
+@assert abs(set_2_expected_rel_freq - set_2_rel_freq) < tol
+@assert abs(set_3_expected_rel_freq - set_3_rel_freq) < tol
+@assert abs(set_4_expected_rel_freq - set_4_rel_freq) < tol
+@assert abs(set_1_2_expected_rel_freq - set_1_2_rel_freq) < tol
+@assert abs(set_1_3_expected_rel_freq - set_1_3_rel_freq) < tol
+@assert abs(set_1_4_expected_rel_freq - set_1_4_rel_freq) < tol
+@assert abs(set_2_3_expected_rel_freq - set_2_3_rel_freq) < tol
+@assert abs(set_2_4_expected_rel_freq - set_2_4_rel_freq) < tol
+@assert abs(set_3_4_expected_rel_freq - set_3_4_rel_freq) < tol
+@assert abs(set_1_2_3_expected_rel_freq - set_1_2_3_rel_freq) < tol
+@assert abs(set_1_2_4_expected_rel_freq - set_1_2_4_rel_freq) < tol
+@assert abs(set_1_3_4_expected_rel_freq - set_1_3_4_rel_freq) < tol
+@assert abs(set_2_3_4_expected_rel_freq - set_2_3_4_rel_freq) < tol
+@assert abs(set_1_2_3_4_expected_rel_freq - set_1_2_3_4_rel_freq) < tol
