@@ -172,8 +172,28 @@ function orthonormal_spectral_decomposition_matrix(decomp::OrthonormalSpectralDe
     end
 end
 
-function DPP(K::Matrix{Float64})
-    error("Not implemented.")
+# DEBUG: NOT IMPLEMENTED
+# Based on p. 11 of Lavancier, Moller, Rubak
+function DPP(K::Matrix{Float64}, tol, rng)
+    spectral_decomp = orthonormal_spectral_decomposition(K, tol)
+    eigenvalues = [pair.val for pair in spectral_decomp.eigenpairs]
+    bernoullis = map(eigenvalue -> bernoulli_trial(eigenvalue, rng), eigenvalues) .== 1
+    if any(bernoullis)
+        projection_process_vectors = [pair.vec for pair in spectral_decomp.eigenpairs[bernoullis]]
+        v_matrix = reduce(hcat, projection_process_vectors)'
+        # v returns Vector{Float64}
+        v = i -> v_matrix[:,i]
+        n = length(v(1))
+        dist = map(i -> v(i)' * v(i) / n, 1:n)
+        table = cumsum(dist)
+        # just in case
+        table[n] = 1.0
+        X_n = sum(rand(rng) > table) + 1
+        e_1 = v(X_n) / LA.norm(X_n)
+        return Set()
+    else
+        return Set()
+    end
 end
 
 end
