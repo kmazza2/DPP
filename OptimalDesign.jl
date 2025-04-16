@@ -172,25 +172,65 @@ function orthonormal_spectral_decomposition_matrix(decomp::OrthonormalSpectralDe
     end
 end
 
-# DEBUG: NOT IMPLEMENTED
 # Based on p. 11 of Lavancier, Moller, Rubak
 function DPP(K::Matrix{Float64}, tol, rng)
     spectral_decomp = orthonormal_spectral_decomposition(K, tol)
     eigenvalues = [pair.val for pair in spectral_decomp.eigenpairs]
-    bernoullis = map(eigenvalue -> bernoulli_trial(eigenvalue, rng), eigenvalues) .== 1
+    bernoullis = map(
+        eigenvalue -> bernoulli_trial(eigenvalue, rng),
+        eigenvalues
+    ) .== 1
     if any(bernoullis)
-        projection_process_vectors = [pair.vec for pair in spectral_decomp.eigenpairs[bernoullis]]
+        projection_process_vectors = [
+            pair.vec for pair in spectral_decomp.eigenpairs[bernoullis]
+        ]
         v_matrix = reduce(hcat, projection_process_vectors)'
         # v returns Vector{Float64}
         v = i -> v_matrix[:,i]
         n = length(v(1))
-        dist = map(i -> v(i)' * v(i) / n, 1:n)
-        table = cumsum(dist)
+        X = Vector{UInt}(undef, n)
+        e = Vector{Vector{Float64}}(undef, n)
+        dist_X_n = map(
+            i -> v(i)' * v(i) / n,
+            1:spectral_decomp.original_matrix_size[1]
+        )
+        table = cumsum(dist_X_n)
         # just in case
-        table[n] = 1.0
-        X_n = sum(rand(rng) > table) + 1
-        e_1 = v(X_n) / LA.norm(X_n)
-        return Set()
+        @assert abs(table[spectral_decomp.original_matrix_size[1]] - 1.0) < 0.01
+        table[spectral_decomp.original_matrix_size[1]] = 1.0
+        X[n] = sum(rand(rng).> table) + 1
+        e[1] = v(X[n]) / LA.norm(v(X[n]))
+        for i in reverse(1:(n-1))
+            # sample
+            # calculate weights
+            p_weights = Vector{Float64}(
+                undef,
+                spectral_decomp.original_matrix_size[1]
+            )
+            for k in 1:spectral_decomp.original_matrix_size[1]
+                # calculate p_i(k)
+                # calculate sum
+                sum = 0.0
+                for j in 1:(n-i)
+                    sum = sum + abs(e[j]' * v(k))^2
+                end
+                p_weights[k] = (v(k)' * v(k) - sum) / i
+            end
+            table = cumsum(p_weights)
+            # just in case
+            @assert abs(table[spectral_decomp.original_matrix_size[1]] - 1) < 0.01
+            table[spectral_decomp.original_matrix_size[1]] = 1
+            X[i] = sum(rand(rng) .> table) + 1
+            # calculate w_i
+            w_sum = 0.0
+            for j in 1:(n-i)
+                w_sum = w_sum .+ e[j]' * v(X[i]) * e[j]
+            end
+            w = v(X[i]) - w_sum
+            # calculate e_(n-i+1)
+            e[n - i + 1] = w / LA.norm(w)
+        end
+        return Set(X)
     else
         return Set()
     end
