@@ -125,26 +125,26 @@ set_2_3 = Set([2 3])
 set_1_2_3 = Set([1 2 3])
 A = [1.0;;]
 simulation = map(_ -> OD.DPP(A), 1:trials)
-set_empty_rel_freq = sum(map(sample -> sample == set_empty, simulation)) / trials
-set_1_rel_freq = sum(map(sample -> sample == set_1, simulation))  / trials
+set_empty_rel_freq = sum(map(sample -> issubset(set_empty, sample), simulation)) / trials
+set_1_rel_freq = sum(map(sample -> issubset(set_1, sample), simulation))  / trials
 set_empty_expected_rel_freq = 1
 set_1_expected_rel_freq =  1
 @assert abs(set_empty_expected_rel_freq - set_empty_rel_freq) < tol
 @assert abs(set_1_expected_rel_freq - set_1_rel_freq) < tol
 A = [1/2;;]
 simulation = map(_ -> OD.DPP(A), 1:trials)
-set_empty_rel_freq =sum(map(sample -> sample == set_empty, simulation)) / trials
-set_1_rel_freq =sum(map(sample -> sample == set_1, simulation)) / trials
+set_empty_rel_freq =sum(map(sample -> issubset(set_empty, sample), simulation)) / trials
+set_1_rel_freq =sum(map(sample -> issubset(set_1, sample), simulation)) / trials
 set_empty_expected_rel_freq = 1
 set_1_expected_rel_freq = 1/2
 @assert abs(set_empty_expected_rel_freq - set_empty_rel_freq) < tol
 @assert abs(set_1_expected_rel_freq - set_1_rel_freq) < tol
 A = [3/4 -1/4; -1/4 3/4]
 simulation = map(_ -> OD.DPP(A), 1:trials)
-set_empty_rel_freq =sum(map(sample -> sample == set_empty, simulation)) / trials
-set_1_rel_freq =sum(map(sample -> sample == set_1, simulation)) / trials
-set_2_rel_freq =sum(map(sample -> sample == set_2, simulation)) / trials
-set_1_2_rel_freq =sum(map(sample -> sample == set_1_2, simulation)) / trials
+set_empty_rel_freq =sum(map(sample -> issubset(set_empty, sample), simulation)) / trials
+set_1_rel_freq =sum(map(sample -> issubset(set_1, sample), simulation)) / trials
+set_2_rel_freq =sum(map(sample -> issubset(set_2, sample), simulation)) / trials
+set_1_2_rel_freq =sum(map(sample -> issubset(set_1_2, sample), simulation)) / trials
 set_empty_expected_rel_freq = 1
 set_1_expected_rel_freq = 3/4
 set_2_expected_rel_freq = 3/4
@@ -155,14 +155,14 @@ set_1_2_expected_rel_freq = 1/2
 @assert abs(set_1_2_expected_rel_freq - set_1_2_rel_freq) < tol
 A = [5/16 1/16 -1/8; 1/16 5/16 -1/8; -1/8 -1/8 1/4]
 simulation = map(_ -> OD.DPP(A), 1:trials)
-set_empty_rel_freq =sum(map(sample -> sample == set_empty, simulation)) / trials
-set_1_rel_freq =sum(map(sample -> sample == set_1, simulation)) / trials
-set_2_rel_freq = sum(map(sample -> sample == set_2, simulation)) / trials
-set_3_rel_freq = sum(map(sample -> sample == set_3, simulation)) / trials
-set_1_2_rel_freq = sum(map(sample -> sample == set_1_2, simulation)) / trials
-set_1_3_rel_freq = sum(map(sample -> sample == set_1_3, simulation)) / trials
-set_2_3_rel_freq = sum(map(sample -> sample == set_2_3, simulation)) / trials
-set_1_2_3_rel_freq = sum(map(sample -> sample == set_1_2_3, simulation)) / trials
+set_empty_rel_freq =sum(map(sample -> issubset(set_empty, sample), simulation)) / trials
+set_1_rel_freq =sum(map(sample -> issubset(set_1, sample), simulation)) / trials
+set_2_rel_freq = sum(map(sample -> issubset(set_2, sample), simulation)) / trials
+set_3_rel_freq = sum(map(sample -> issubset(set_3, sample), simulation)) / trials
+set_1_2_rel_freq = sum(map(sample -> issubset(set_1_2, sample), simulation)) / trials
+set_1_3_rel_freq = sum(map(sample -> issubset(set_1_3, sample), simulation)) / trials
+set_2_3_rel_freq = sum(map(sample -> issubset(set_2_3, sample), simulation)) / trials
+set_1_2_3_rel_freq = sum(map(sample -> issubset(set_1_2_3, sample), simulation)) / trials
 set_empty_expected_rel_freq = 1
 set_1_expected_rel_freq = 5/16
 set_2_expected_rel_freq = 5/16
