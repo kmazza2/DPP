@@ -172,4 +172,8 @@ function orthonormal_spectral_decomposition_matrix(decomp::OrthonormalSpectralDe
     end
 end
 
+function DPP(K::Matrix{Float64})
+    error("Not implemented.")
+end
+
 end

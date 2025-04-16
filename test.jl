@@ -112,3 +112,70 @@ sorted_eigenvalues = sort([pair.val for pair in decomp.eigenpairs])
 @assert abs(sorted_eigenvalues[1] - 2.0) < tol
 @assert abs(sorted_eigenvalues[2] - 2.0) < tol
 @assert abs(sorted_eigenvalues[3] - 3.0) < tol
+
+trials = 10000
+tol = 1e-5
+set_empty = Set()
+set_1 = Set([1])
+set_2 = Set([2])
+set_3 = Set([3])
+set_1_2 = Set([1 2])
+set_1_3 = Set([1 3])
+set_2_3 = Set([2 3])
+set_1_2_3 = Set([1 2 3])
+A = [1.0;;]
+simulation = map(_ -> OD.DPP(A), 1:trials)
+set_empty_rel_freq = sum(map(sample -> sample == set_empty, simulation)) / trials
+set_1_rel_freq = sum(map(sample -> sample == set_1, simulation))  / trials
+set_empty_expected_rel_freq = 1
+set_1_expected_rel_freq =  1
+@assert abs(set_empty_expected_rel_freq - set_empty_rel_freq) < tol
+@assert abs(set_1_expected_rel_freq - set_1_rel_freq) < tol
+A = [1/2;;]
+simulation = map(_ -> OD.DPP(A), 1:trials)
+set_empty_rel_freq =sum(map(sample -> sample == set_empty, simulation)) / trials
+set_1_rel_freq =sum(map(sample -> sample == set_1, simulation)) / trials
+set_empty_expected_rel_freq = 1
+set_1_expected_rel_freq = 1/2
+@assert abs(set_empty_expected_rel_freq - set_empty_rel_freq) < tol
+@assert abs(set_1_expected_rel_freq - set_1_rel_freq) < tol
+A = [3/4 -1/4; -1/4 3/4]
+simulation = map(_ -> OD.DPP(A), 1:trials)
+set_empty_rel_freq =sum(map(sample -> sample == set_empty, simulation)) / trials
+set_1_rel_freq =sum(map(sample -> sample == set_1, simulation)) / trials
+set_2_rel_freq =sum(map(sample -> sample == set_2, simulation)) / trials
+set_1_2_rel_freq =sum(map(sample -> sample == set_1_2, simulation)) / trials
+set_empty_expected_rel_freq = 1
+set_1_expected_rel_freq = 3/4
+set_2_expected_rel_freq = 3/4
+set_1_2_expected_rel_freq = 1/2
+@assert abs(set_empty_expected_rel_freq - set_empty_rel_freq) < tol
+@assert abs(set_1_expected_rel_freq - set_1_rel_freq) < tol
+@assert abs(set_2_expected_rel_freq - set_2_rel_freq) < tol
+@assert abs(set_1_2_expected_rel_freq - set_1_2_rel_freq) < tol
+A = [5/16 1/16 -1/8; 1/16 5/16 -1/8; -1/8 -1/8 1/4]
+simulation = map(_ -> OD.DPP(A), 1:trials)
+set_empty_rel_freq =sum(map(sample -> sample == set_empty, simulation)) / trials
+set_1_rel_freq =sum(map(sample -> sample == set_1, simulation)) / trials
+set_2_rel_freq = sum(map(sample -> sample == set_2, simulation)) / trials
+set_3_rel_freq = sum(map(sample -> sample == set_3, simulation)) / trials
+set_1_2_rel_freq = sum(map(sample -> sample == set_1_2, simulation)) / trials
+set_1_3_rel_freq = sum(map(sample -> sample == set_1_3, simulation)) / trials
+set_2_3_rel_freq = sum(map(sample -> sample == set_2_3, simulation)) / trials
+set_1_2_3_rel_freq = sum(map(sample -> sample == set_1_2_3, simulation)) / trials
+set_empty_expected_rel_freq = 1
+set_1_expected_rel_freq = 5/16
+set_2_expected_rel_freq = 5/16
+set_3_expected_rel_freq = 1/4
+set_1_2_expected_rel_freq = 3/32
+set_1_3_expected_rel_freq = 1/16
+set_2_3_expected_rel_freq = 1/16
+set_1_2_3_expected_rel_freq = 1/64
+@assert abs(set_empty_expected_rel_freq - set_empty_rel_freq) < tol
+@assert abs(set_1_expected_rel_freq - set_1_rel_freq) < tol
+@assert abs(set_2_expected_rel_freq - set_2_rel_freq) < tol
+@assert abs(set_3_expected_rel_freq - set_3_rel_freq) < tol
+@assert abs(set_1_2_expected_rel_freq - set_1_2_rel_freq) < tol
+@assert abs(set_1_3_expected_rel_freq - set_1_3_rel_freq) < tol
+@assert abs(set_2_3_expected_rel_freq - set_2_3_rel_freq) < tol
+@assert abs(set_1_2_3_expected_rel_freq - set_1_2_3_rel_freq) < tol
