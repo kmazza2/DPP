@@ -246,3 +246,9 @@ tol = 1e-2
 @assert abs(set_1_3_4_expected_rel_freq - set_1_3_4_rel_freq) < tol
 @assert abs(set_2_3_4_expected_rel_freq - set_2_3_4_rel_freq) < tol
 @assert abs(set_1_2_3_4_expected_rel_freq - set_1_2_3_4_rel_freq) < tol
+
+A = [1.0 -2.0; -2.0 4.0]
+@assert OD.is_positive_semidefinite(A)
+
+A = [1.0 -2.0; -2.0 -4.0]
+@assert !OD.is_positive_semidefinite(A)

@@ -10,6 +10,7 @@ export Eigenpair
 export SpectralDecomposition
 export orthonormal_spectral_decomposition
 export orthonormal_spectral_decomposition_matrix
+export is_positive_semidefinite
 
 import LinearAlgebra as LA
 
@@ -233,6 +234,14 @@ function DPP(K::Matrix{Float64}, tol, rng)
         return Set(X)
     else
         return Set()
+    end
+end
+
+function is_positive_semidefinite(A::Matrix{Float64})
+    if LA.issymmetric(A) && all(LA.eigvals(A) .>= 0.0)
+        return true
+    else
+        return false
     end
 end
 
