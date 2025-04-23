@@ -11,6 +11,8 @@ export SpectralDecomposition
 export orthonormal_spectral_decomposition
 export orthonormal_spectral_decomposition_matrix
 export is_positive_semidefinite
+export symmetric_sqrt
+export regularized_DPP
 
 import LinearAlgebra as LA
 
@@ -243,6 +245,27 @@ function is_positive_semidefinite(A::Matrix{Float64})
     else
         return false
     end
+end
+
+function symmetric_sqrt(A::Matrix{Float64}, tol)
+    spectral_decomp = orthonormal_spectral_decomposition(A, tol)
+    eigvals = map(pair -> pair.val, spectral_decomp.eigenpairs)
+    eigvecs = map(pair -> pair.vec, spectral_decomp.eigenpairs)
+    U = stack(eigvecs)
+    S = LA.diagm(sqrt.(eigvals))
+    return U * S * U'
+end
+
+function regularized_DPP(X::Matrix{Float64}, A::Matrix{Float64}, p::Vector{Float64}, tol, rng)
+    n = size(X,1)
+    d = size(X,2)
+    D = LA.diagm(p)
+    @assert d == size(A,1)
+    @assert d == size(A,2)
+    @assert n == length(p)
+    @assert all(map(p_i -> (p_i >= 0 && p_i <= 1), p))
+    @assert d == LA.rank(X' * D * X + A)
+    error("Not implemented.")
 end
 
 end
