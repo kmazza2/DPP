@@ -256,6 +256,7 @@ function symmetric_sqrt(A::Matrix{Float64}, tol)
     return U * S * U'
 end
 
+# p.5 of Mahoney
 function regularized_DPP(X::Matrix{Float64}, A::Matrix{Float64}, p::Vector{Float64}, tol, rng)
     n = size(X,1)
     d = size(X,2)
@@ -265,7 +266,13 @@ function regularized_DPP(X::Matrix{Float64}, A::Matrix{Float64}, p::Vector{Float
     @assert n == length(p)
     @assert all(map(p_i -> (p_i >= 0 && p_i <= 1), p))
     @assert d == LA.rank(X' * D * X + A)
-    error("Not implemented.")
+    Z = A + X' * D * X
+    D_sqrt = symmetric_sqrt(D, tol)
+    Z_sqrt = symmetric_sqrt(Z, tol)
+    B = D_sqrt * X * LA.inv(Z_sqrt)
+    T = DPP(B * B', tol, rng)
+    result = union(T, Set(findall(b_i -> b_i == 1, map(i -> bernoulli_trial(p[i], rng), 1:n))))
+    return result
 end
 
 end
