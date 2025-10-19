@@ -1,6 +1,6 @@
-include("OptimalDesign.jl")
+include("DPP.jl")
 import LinearAlgebra as LA
-import .OptimalDesign as OD
+import .DPP as OD
 using Random: rand, Xoshiro
 
 rng = Xoshiro(1234)
