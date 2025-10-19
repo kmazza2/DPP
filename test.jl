@@ -1,6 +1,6 @@
-include("DPP.jl")
+include("kDPP.jl")
 import LinearAlgebra as LA
-import .DPP as OD
+import .kDPP as OD
 using Random: rand, Xoshiro
 
 rng = Xoshiro(1234)
