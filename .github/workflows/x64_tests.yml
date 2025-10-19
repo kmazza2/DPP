@@ -10,4 +10,4 @@ jobs:
         with:
           version: '1.11'
       - run: julia test.jl
-        working-directory: /home/runner/work/Optimal-Design/Optimal-Design
+        working-directory: /home/runner/work/DPP/DPP
