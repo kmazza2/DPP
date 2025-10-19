@@ -1,4 +1,4 @@
-module OptimalDesign
+module DPP
 
 export orthonormal_nullspace_basis
 export orthonormal_columnspace_basis
@@ -12,6 +12,7 @@ export orthonormal_spectral_decomposition
 export orthonormal_spectral_decomposition_matrix
 export is_positive_semidefinite
 export symmetric_sqrt
+export DPP
 export regularized_DPP
 
 import LinearAlgebra as LA
