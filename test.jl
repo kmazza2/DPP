@@ -264,7 +264,7 @@ X = [1.5 2.5; 0.2 3.0; 2.1 1.5]
 p = [0.5, 0.5, 0.25]
 D = LA.diagm(p)
 A = [1.0 2.0; 2.0 4.0]
-tol = 1e-5
+tol = 1e-2
 trials = 10000
 
 simulation = map(_ -> OD.regularized_DPP(X, A, p, tol, rng), 1:trials)
@@ -291,6 +291,12 @@ factor = 0.5 * 0.5 * 0.75
 set_1_2_expected_rel_freq = num / denom * factor
 set_1_2_actual_rel_freq = sum(map(sample -> isequal(set_1_2, sample), simulation)) / trials
 
+num = LA.det([1.5 0.2 2.1; 2.5 3.0 1.5] * [1.5 0.2 2.1; 2.5 3.0 1.5]' + A)
 factor = 0.5 * 0.5 * 0.25
-set_1_2_3_expected_rel_freq = factor
+set_1_2_3_expected_rel_freq = num / denom * factor
 set_1_2_3_actual_rel_freq = sum(map(sample -> isequal(set_1_2_3, sample), simulation)) / trials
+
+@assert abs(set_empty_expected_rel_freq - set_empty_actual_rel_freq) < tol
+@assert abs(set_3_expected_rel_freq - set_3_actual_rel_freq) < tol
+@assert abs(set_1_2_expected_rel_freq - set_1_2_actual_rel_freq) < tol
+@assert abs(set_1_2_3_expected_rel_freq - set_1_2_3_actual_rel_freq) < tol
