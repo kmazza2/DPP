@@ -1,4 +1,4 @@
-module DPP
+module kDPP
 
 export orthonormal_nullspace_basis
 export orthonormal_columnspace_basis
